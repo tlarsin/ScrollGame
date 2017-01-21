@@ -59,6 +59,10 @@ class RunGame(Widget):
             vel = result
             self.initiateVel(vel = (vel.x, vel.y))
 
+    def score(self):
+        distance = self.sprite.center_x - self.sprite.distance
+        return distance
+
     def restart(self):
         # Reset Sprite
         self.sprite.center_x = self.center_x
