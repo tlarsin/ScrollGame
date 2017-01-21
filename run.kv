@@ -8,10 +8,22 @@
             pos: self.pos
             size: self.size
 
+<Block>:
+    size: 400,15
+    canvas:
+        Rectangle:
+            pos: self.pos
+            size: self.size
 <RunGame>:
     sprite: character
+    block: blocks
 
     SpriteCharacter:
         id: character
         center_x: root.center_x
-        center_y: root.center_y
+        y: blocks.height
+
+    Block:
+        id: blocks
+        center_x: root.center_x
+        y: root.y
