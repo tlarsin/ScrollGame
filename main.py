@@ -68,6 +68,10 @@ class RunGame(Widget):
         self.block.center_x = self.center_x
         self.initiateVel(vel = (0, -1))
 
+    def score(self):
+        distance = self.sprite.center_x - self.sprite.x
+        return distance
+
     def update(self, dt):
         self.sprite.move()
 
@@ -81,6 +85,7 @@ class RunGame(Widget):
         # Reset if falls out of map
         # Also displays score
         if self.sprite.y < self.y:
+            self.sprite.distance = self.score()
             self.restart()
 
         # Gravity
