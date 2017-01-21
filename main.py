@@ -4,6 +4,7 @@ from kivy.core.window import Window
 from kivy.properties import ListProperty, NumericProperty, ReferenceListProperty,\
     ObjectProperty
 from kivy.vector import Vector
+from kivy.clock import Clock
 
 class SpriteCharacter(Widget):
     distance = NumericProperty(0)
@@ -11,14 +12,19 @@ class SpriteCharacter(Widget):
     velocity_y = NumericProperty(0)
     velocity = ReferenceListProperty(velocity_x, velocity_y)
 
+    running = True
+
     def move(self):
-        pass
+        self.pos = Vector(*self.velocity) + self.pos
 
 class Block(Widget):
     velocity = NumericProperty(-1)
 
     def __init__(self, **kwargs):
         super(Block, self).__init__(**kwargs)
+
+    def update(self, dt):
+        self.x -= self.velocity
 
 class RunGame(Widget):
     sprite = ObjectProperty(None)
@@ -34,17 +40,58 @@ class RunGame(Widget):
         self._keyboard = None
 
     def _on_keyboard_down(self, keyboard, keycode, text, modifiers):
+        if keycode[1] == 'w' and self.sprite.running:
+            self.initiateVel(vel = (0, 1.2))
+            self.sprite.running = True
+        if keycode[1] == 'p' and self.sprite.running:
+            self.sprite.running = False
+        if keycode[1] == 's' and not self.sprite.running:
+            self.sprite.running = True
         return True
 
     def initiateVel(self, vel=(0,-1)):
-        pass
+        self.sprite.velocity = vel
 
-    def update():
+    def gravity(self):
+        if self.sprite.y > self.block.height:
+            vx, vy = self.sprite.velocity
+            result = Vector(vx, -.6 * vy)
+            vel = result
+            self.initiateVel(vel = (vel.x, vel.y))
+
+    def restart(self):
+        # Reset Sprite
+        self.sprite.center_x = self.center_x
+        self.sprite.y = self.block.height
+
+        # Reset map
+        self.block.center_x = self.center_x
+        self.initiateVel(vel = (0, -1))
+
+    def update(self, dt):
         self.sprite.move()
+
+        if self.sprite.running:
+            self.block.update(dt)
+
+        # Fall off of block
+        if self.sprite.collide_widget(self.block):
+            self.sprite.y = self.block.height
+
+        # Reset if falls out of map
+        # Also displays score
+        if self.sprite.y < self.y:
+            self.restart()
+
+        # Gravity
+        if self.sprite.y > self.block.height + 30:
+            self.gravity()
 
 class RunApp(App):
     def build(self):
         game = RunGame()
+        game.initiateVel()
+        Clock.schedule_interval(game.update, 1.0 / 60.0)
         return game
 
 if __name__ == "__main__":
