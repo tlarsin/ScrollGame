@@ -1,7 +1,17 @@
 #:kivy 1.0.9
 
-<SpriteCharacter>
-    pass
+<SpriteCharacter>:
+    size: 15,30
+    canvas:
+        Rectangle:
+            source: 'sprite.bmp'
+            pos: self.pos
+            size: self.pos
 
-<RunGame>
-    pass
+<RunGame>:
+    sprite: character
+
+    SpriteCharacter:
+        id: character
+        center_x: root.center_x
+        #y: blocks.height
