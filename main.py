@@ -14,8 +14,15 @@ class SpriteCharacter(Widget):
     def move(self):
         pass
 
+class Block(Widget):
+    velocity = NumericProperty(-1)
+
+    def __init__(self, **kwargs):
+        super(Block, self).__init__(**kwargs)
+
 class RunGame(Widget):
     sprite = ObjectProperty(None)
+    block = ObjectProperty(None)
 
     def __init__(self, **kwargs):
         super(RunGame, self).__init__(**kwargs)
