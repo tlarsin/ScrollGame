@@ -3,9 +3,16 @@ from kivy.uix.widget import Widget
 from kivy.core.window import Window
 from kivy.properties import ListProperty, NumericProperty, ReferenceListProperty,\
     ObjectProperty
+from kivy.vector import Vector
 
 class SpriteCharacter(Widget):
-    pass
+    distance = NumericProperty(0)
+    velocity_x = NumericProperty(0)
+    velocity_y = NumericProperty(0)
+    velocity = ReferenceListProperty(velocity_x, velocity_y)
+
+    def move(self):
+        pass
 
 class RunGame(Widget):
     sprite = ObjectProperty(None)
@@ -21,6 +28,12 @@ class RunGame(Widget):
 
     def _on_keyboard_down(self, keyboard, keycode, text, modifiers):
         return True
+
+    def initiateVel(self, vel=(0,-1)):
+        pass
+
+    def update():
+        self.sprite.move()
 
 class RunApp(App):
     def build(self):
