@@ -60,7 +60,7 @@ class RunGame(Widget):
             self.initiateVel(vel = (vel.x, vel.y))
 
     def score(self):
-        distance = self.sprite.center_x - self.sprite.distance
+        distance = self.sprite.center_x - self.sprite.x
         return distance
 
     def restart(self):
