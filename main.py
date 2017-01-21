@@ -18,7 +18,7 @@ class SpriteCharacter(Widget):
         self.pos = Vector(*self.velocity) + self.pos
 
 class Block(Widget):
-    velocity = NumericProperty(-1)
+    velocity = NumericProperty(1)
 
     def __init__(self, **kwargs):
         super(Block, self).__init__(**kwargs)
