@@ -45,8 +45,13 @@ class RunGame(Widget):
             self.sprite.running = True
         if keycode[1] == 'p' and self.sprite.running:
             self.sprite.running = False
-            self.initiateVel(vel = (0, 1.0))
+            self.initiateVel(vel = (0,0))
         if keycode[1] == 's' and not self.sprite.running:
+            # Need to fix velocity on jump and pause / start
+            if self.sprite.velocity_y > 0:
+                self.initiateVel(vel = (0,1.2))
+            else:
+                self.initiateVel(vel = (0, -1.2))
             self.sprite.running = True
         return True
 
