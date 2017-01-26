@@ -48,7 +48,6 @@ class RunGame(Widget):
             self.sprite.running = False
             self.initiateVel(vel = (0,0))
         if keycode[1] == 's' and not self.sprite.running:
-            # Need to fix velocity on jump and pause / start
             if self.sprite.y > self.block.height + 30:
                 self.initiateVel(vel = (0,-1.2))
             else:
