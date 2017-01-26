@@ -41,8 +41,9 @@ class RunGame(Widget):
 
     def _on_keyboard_down(self, keyboard, keycode, text, modifiers):
         if keycode[1] == 'w' and self.sprite.running:
-            self.initiateVel(vel = (0, 1.2))
-            self.sprite.running = True
+            if self.sprite.y == self.block.height:
+                self.initiateVel(vel = (0, 1.2))
+                self.sprite.running = True
         if keycode[1] == 'p' and self.sprite.running:
             self.sprite.running = False
             self.initiateVel(vel = (0,0))
