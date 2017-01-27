@@ -31,8 +31,6 @@ class Block(Widget):
 class RunGame(Widget):
     sprite = ObjectProperty(None)
     block = ObjectProperty(None)
-    count = NumericProperty(0)
-    float timeDiff = 0.0
 
     def __init__(self, **kwargs):
         super(RunGame, self).__init__(**kwargs)
@@ -57,6 +55,7 @@ class RunGame(Widget):
                 self.initiateVel(vel = (0,-1.2))
             self.sprite.running = True
             if self.sprite.y > self.block.height + 30:
+                pass
             elif self.sprite.collide_widget(self.block):
                 pass
             else:
