@@ -5,6 +5,8 @@ from kivy.properties import ListProperty, NumericProperty, ReferenceListProperty
     ObjectProperty
 from kivy.vector import Vector
 from kivy.clock import Clock
+import time
+
 
 class SpriteCharacter(Widget):
     distance = NumericProperty(0)
@@ -29,6 +31,8 @@ class Block(Widget):
 class RunGame(Widget):
     sprite = ObjectProperty(None)
     block = ObjectProperty(None)
+    count = NumericProperty(0)
+    float timeDiff = 0.0
 
     def __init__(self, **kwargs):
         super(RunGame, self).__init__(**kwargs)
@@ -48,10 +52,11 @@ class RunGame(Widget):
             self.sprite.running = False
             self.initiateVel(vel = (0,0))
         if keycode[1] == 's' and not self.sprite.running:
-            # Need to fix velocity issues when paused/unpausing (maybe with a timer that sees how long ago jump occured....)
+            # Need to fix velocity issues when paused/unpausing (maybe with a timer that sees how long ago jump occured....p)
+            if self.sprite.y < self.block.height + 30:
+                self.initiateVel(vel = (0,-1.2))
             self.sprite.running = True
             if self.sprite.y > self.block.height + 30:
-                self.initiateVel(vel = (0,-1.2))
             elif self.sprite.collide_widget(self.block):
                 pass
             else:
