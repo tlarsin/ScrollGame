@@ -2,7 +2,7 @@ from kivy.app import App
 from kivy.uix.widget import Widget
 from kivy.core.window import Window
 from kivy.properties import ListProperty, NumericProperty, ReferenceListProperty,\
-    ObjectProperty
+    ObjectProperty, BooleanProperty
 from kivy.vector import Vector
 from kivy.clock import Clock
 import time
@@ -15,6 +15,7 @@ class SpriteCharacter(Widget):
     velocity = ReferenceListProperty(velocity_x, velocity_y)
 
     running = True
+    marked = BooleanProperty(False)
 
     def move(self):
         self.pos = Vector(*self.velocity) + self.pos
@@ -30,7 +31,7 @@ class Block(Widget):
 
 class RunGame(Widget):
     sprite = ObjectProperty(None)
-    block = ObjectProperty(None)
+    blocks = ListProperty([])
 
     def __init__(self, **kwargs):
         super(RunGame, self).__init__(**kwargs)
@@ -62,8 +63,23 @@ class RunGame(Widget):
                 self.initiateVel(vel = (0,1.2))
         return True
 
-    def initiateVel(self, vel=(0,-1)):
+    def initiateVel(self, vel=(0,-1)): # Set to (0,1) to test spawning of blocks
         self.sprite.velocity = vel
+
+    def remove_block(self):
+        self.remove_widget(self.blocks[0])
+        self.blocks = self.blocks[1:]
+
+    def new_block(self, remove=True):
+        if remove:
+            self.remove_block()
+        new_block = Block()
+        new_block.height = self.block.height
+        new_block.x = self.block.width
+        #new_block.update_position()
+        new_block.x -= 1
+        self.add_widget(new_block)
+        self.blocks = self.blocks + [new_block]
 
     def gravity(self):
         if self.sprite.y > self.block.height:
@@ -73,7 +89,7 @@ class RunGame(Widget):
             self.initiateVel(vel = (vel.x, vel.y))
 
     def score(self):
-        distance = self.sprite.center_x - self.sprite.x
+        distance = (self.sprite.center_x - self.sprite.x) * 100
         return distance
 
     def restart(self):
@@ -104,6 +120,15 @@ class RunGame(Widget):
         # Gravity
         if self.sprite.y > self.block.height + 30:
             self.gravity()
+
+        for block in self.blocks:
+            if block.x < self.x:
+                block.marked = True
+                self.new_block(remove=True)
+        if len(self.blocks) == 0:
+            self.new_block(remove=False)
+        elif self.blocks[0].x < 0:
+            self.remove_block()
 
 class RunApp(App):
     def build(self):

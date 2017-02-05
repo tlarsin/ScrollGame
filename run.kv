@@ -1,5 +1,4 @@
 #:kivy 1.0.9
-
 <SpriteCharacter>:
     size: 15,30
     canvas:
@@ -19,10 +18,10 @@
     block: blocks
 
     Label:
-        font_size: 70
+        font_size: 30
         center_x: root.width / 4
         top: root.top - 50
-        text: str(root.sprite.distance)
+        text: str("Score: ") + str(root.sprite.distance)
 
     SpriteCharacter:
         id: character
