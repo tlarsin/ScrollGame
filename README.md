@@ -18,6 +18,7 @@ Scroll type game that features a character that jumps to blocks to continue trav
 * Create a menu that one can start game from instead of automatically starting
 * Add stars that character can grab
 * Change how score is shown
+* Increase speed of blocks longer game runs
 
 
 ### Game Running
